@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
- 
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd">
     
     <context:annotation-config/>
+    
+    <bean id="string" class="java.lang.String"></bean>
  
-    <bean id="contact1" class="com.stoxa.springhw.Contact">
+    <bean id="contact1" class="com.stoxa.springhwannotations.Contact">
         <property name="firstName" value="Андрей"/>
         <property name="lastName" value="Соколов"/>
         <property name="phone" value="+380934567894"/>
         <property name="email" value="sokolov@yandex.ru"/>
     </bean>
     
-    <bean id="contact2" class="com.stoxa.springhw.Contact">
+    <bean id="contact2" class="com.stoxa.springhwannotations.Contact">
         <property name="firstName" value="Сергей"/>
         <property name="lastName" value="Иванов"/>
         <property name="phone" value="+380674560901"/>
         <property name="email" value="ivanov@google.com"/>
     </bean>
     
-    <bean id="contact3" class="com.stoxa.springhw.Contact">
+    <bean id="contact3" class="com.stoxa.springhwannotations.Contact">
         <property name="firstName" value="Татьяна"/>
-        <property name="lastName" value="Семенова"/>
-        <property name="phone" value="+380682348705"/>
-        <property name="email" value="semenova@mail.ru"/>
+        <property name="lastName"  value="Семенова"/>
+        <property name="phone"  value="+380682348705"/>
+        <property name="email"  value="semenova@mail.ru"/>
     </bean>
     
-    <bean id="contact4" class="com.stoxa.springhw.Contact">
+    <bean id="contact4" class="com.stoxa.springhwannotations.Contact">
         <property name="firstName" value="Костя"/>
         <property name="lastName" value="Копейка"/>
         <property name="phone" value="+380956784343"/>
         <property name="email" value="kopeechka@gmail.com"/>
     </bean>
     
-    <bean id="contact5" class="com.stoxa.springhw.Contact">
+    <bean id="contact5" class="com.stoxa.springhwannotations.Contact">
         <property name="firstName" value="Ксюша"/>
         <property name="lastName" value="Рудниченко"/>
         <property name="phone" value="+380937327894"/>

@@ -9,10 +9,10 @@
     <context:property-placeholder location="classpath:ContactBookMaximumSize.properties"/>
      <import resource="config.xml"/>
      
-     <bean id="ContactDAO" class="com.stoxa.springhw.ContactSimpleDAO">
+     <bean id="ContactDAO" class="com.stoxa.springhwannotations.ContactSimpleDAO">
      </bean>
      
-     <bean id="ContactService" class="com.stoxa.springhw.ContactManager" init-method="init">
+     <bean id="ContactService" class="com.stoxa.springhwannotations.ContactManager" init-method="init">
         <property name="maxContactBookSize" value="#{T(Integer).parseInt(${maxSize})}"/>      
     </bean>
 </beans>
