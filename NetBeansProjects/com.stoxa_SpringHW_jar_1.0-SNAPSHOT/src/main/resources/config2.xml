@@ -7,10 +7,8 @@
     
     <context:annotation-config/>
     <context:property-placeholder location="classpath:ContactBookMaximumSize.properties"/>
-     <import resource="config.xml"/>
+    <import resource="config.xml"/>
      
-     <bean id="ContactDAO" class="com.stoxa.springhwannotations.ContactSimpleDAO">
-     </bean>
      
      <bean id="ContactService" class="com.stoxa.springhwannotations.ContactManager" init-method="init">
         <property name="maxContactBookSize" value="#{T(Integer).parseInt(${maxSize})}"/>      
