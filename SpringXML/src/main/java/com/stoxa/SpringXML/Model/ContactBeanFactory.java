@@ -15,12 +15,15 @@ import java.util.Properties;
  * @author ksu
  */
 public class ContactBeanFactory extends AbstractFactoryBean {
+    
+    private static  int contactCount = 1;
+    private Contact newContact = null;
+    private FileInputStream fis;
+    private Properties property = new Properties();
 
     @Override
     public Object createInstance() throws Exception {
-        Contact newContact = null;
-        FileInputStream fis;
-        Properties property = new Properties();
+        
         String firstName;
         String lastName;
         String phone;
@@ -28,26 +31,38 @@ public class ContactBeanFactory extends AbstractFactoryBean {
         try {
             fis = new FileInputStream("src/main/resources/contacts.properties");
             property.load(fis);
-            for (int i=1;;i++){
-                newContact = new Contact();
-                firstName = property.getProperty(i + ".firstName");
-                newContact.setFirstName(firstName);
-                lastName = property.getProperty(i + ".lastName");
-                newContact.setLastName(lastName);
-                phone = property.getProperty(i + ".phone");
-                newContact.setPhone(phone);
-                email = property.getProperty(i + ".email");
-                newContact.setEmail(email);
-            } 
+            if (!hasNextInstance()) {
+                throw new NullPointerException("There are no more contacts in file src/main/resources/contacts.properties, contactCount = " + contactCount);
+            }
+            newContact = new Contact();
+            firstName = property.getProperty(contactCount + ".firstName");
+            newContact.setFirstName(firstName);
+            lastName = property.getProperty(contactCount + ".lastName");
+            newContact.setLastName(lastName);
+            phone = property.getProperty(contactCount + ".phone");
+            newContact.setPhone(phone);
+            email = property.getProperty(contactCount + ".email");
+            newContact.setEmail(email);
+
         } catch (IOException e) {
             System.err.println("ОШИБКА: Файл свойств отсуствует!");
+        } finally {
+            fis.close();
         }
+        contactCount++;
         return newContact;
     }
 
     @Override
     public Class getObjectType() {
         return Contact.class;
+    }
+    
+    public boolean hasNextInstance () {
+        if ((property.getProperty(contactCount + ".firstName"))!=null) {
+            return true;
+        }
+        return false;
     }
     
 }
