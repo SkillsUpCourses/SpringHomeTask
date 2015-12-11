@@ -27,7 +27,7 @@ public class TestClass {
     public static void main(String[] args) throws Exception {
         ApplicationContext context
                 = new ClassPathXmlApplicationContext("config2.xml");
-        AbstractFactoryBean factory = context.getBean("contactFactory", ContactBeanFactory.class);
+        FactoryBean factory = context.getBean("contactFactory", ContactBeanFactory.class);
 
         Contact c1 = (Contact) factory.getObject();
         Contact c2 = (Contact) factory.getObject();

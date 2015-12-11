@@ -12,7 +12,7 @@
      
      <bean id="contactFactory" class="com.stoxa.SpringXML.Model.ContactBeanFactory" />
      
-     <bean id="contact" factory-bean="contactFactory" factory-method="createInstance" scope="prototype"/>
+     <bean id="contact" factory-bean="contactFactory" factory-method="getObject" scope="prototype"/>
      
      <bean id="ContactDAO" class="com.stoxa.SpringXML.DAO.ContactSimpleDAO">
          <property name="contacts">

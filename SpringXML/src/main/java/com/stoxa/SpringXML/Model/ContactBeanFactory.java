@@ -9,12 +9,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import java.util.Properties;
+import org.springframework.beans.factory.FactoryBean;
 
 /**
  *
  * @author ksu
  */
-public class ContactBeanFactory extends AbstractFactoryBean {
+public class ContactBeanFactory implements FactoryBean<Contact>
+       /** extends AbstractFactoryBean*/ {
     
     private static  int contactCount = 1;
     private Contact newContact = null;
@@ -22,8 +24,19 @@ public class ContactBeanFactory extends AbstractFactoryBean {
     private Properties property = new Properties();
 
     @Override
-    public Object createInstance() throws Exception {
-        
+    public Class getObjectType() {
+        return Contact.class;
+    }
+    
+    public boolean hasNextInstance () {
+        if ((property.getProperty(contactCount + ".firstName"))!=null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Contact getObject() throws Exception {
         String firstName;
         String lastName;
         String phone;
@@ -54,14 +67,7 @@ public class ContactBeanFactory extends AbstractFactoryBean {
     }
 
     @Override
-    public Class getObjectType() {
-        return Contact.class;
-    }
-    
-    public boolean hasNextInstance () {
-        if ((property.getProperty(contactCount + ".firstName"))!=null) {
-            return true;
-        }
+    public boolean isSingleton() {
         return false;
     }
     
