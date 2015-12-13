@@ -3,25 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.stoxa.springjavaconfig.Model;
+package com.stoxa.springjavaconfig.Factory;
 
+import com.stoxa.springjavaconfig.Model.Contact;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import org.springframework.beans.factory.FactoryBean;
+
 
 /**
  *
  * @author stoxa
  */
 
-    public class ContactBeanFactory implements FactoryBean<Contact>
-       /** extends AbstractFactoryBean*/ {
+public class ContactBeanFactory implements FactoryBean<Contact> {
     
     private static  int contactCount = 1;
     private Contact newContact = null;
     private FileInputStream fis;
-    private Properties property = new Properties();
+    private final Properties property = new Properties();
 
     @Override
     public Class getObjectType() {

@@ -6,8 +6,8 @@
 package com.stoxa.springjavaconfig.DAO;
 
 import com.stoxa.springjavaconfig.Model.Contact;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  *
@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class ContactSimpleDAO implements ContactDAO{
 
-    private List<Contact> contacts;
+    private Map <String,Contact> contacts;
     
     @Override
     public void addContact(Contact contact) {
-        contacts.add(contact);
+        contacts.put(contact.getPhone(), contact);
     }
  
     @Override
@@ -35,27 +35,17 @@ public class ContactSimpleDAO implements ContactDAO{
  
     @Override
     public void deleteContact(Contact contact) {
-        for(Iterator<Contact> it = contacts.iterator(); it.hasNext();) {
-            Contact cnt = it.next();
-            if(cnt.getPhone().equals(contact.getPhone())) {
-                it.remove();
-            }
-        }
+        contacts.remove(contact.getPhone(), contact);
     }
  
     @Override
     public Contact getContact(String phone) {
-        for(Contact contact : contacts) {
-            if(contact.getPhone().equals(phone)) {
-                return contact;
-            }
-        }
-        throw new NullPointerException();
+        return contacts.get(phone);
     }
     
     @Override
-    public List<Contact> getAllContacts() {
-        return contacts;
+    public Collection <Contact> getAllContacts() {
+        return contacts.values();
     }
 
     @Override
@@ -67,19 +57,19 @@ public class ContactSimpleDAO implements ContactDAO{
     /**
      * @param contacts the contacts to set
      */
-    public void setContacts(List<Contact> contacts) {
+    public void setContacts(Map<String,Contact> contacts) {
         this.contacts = contacts;
     }
     
     public Contact getContact(int number) {
         int i=0;
-        for(Contact contact : contacts) {
+        for (Map.Entry<String, Contact> entry : contacts.entrySet()){
             if(i==number) {
-                return contact;
+                return entry.getValue();
             }
             i++;
         }
-        throw new NullPointerException();
+        throw new NullPointerException();  
     } 
 }
 

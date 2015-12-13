@@ -10,19 +10,16 @@ import com.stoxa.springjavaconfig.DAO.ContactSimpleDAO;
 import com.stoxa.springjavaconfig.EventListener.ClearEvent;
 import com.stoxa.springjavaconfig.EventListener.DeleteContactListener;
 import com.stoxa.springjavaconfig.Model.Contact;
-import com.stoxa.springjavaconfig.Model.ContactBeanFactory;
+import com.stoxa.springjavaconfig.Factory.ContactBeanFactory;
 import com.stoxa.springjavaconfig.Service.ContactManager;
 import com.stoxa.springjavaconfig.Service.ContactService;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
@@ -52,12 +49,12 @@ public class AppConfig {
     @Bean
     public ContactDAO dao() throws Exception {
         final ContactSimpleDAO dao = new ContactSimpleDAO();
-        List<Contact> contacts = new ArrayList<>();
-        contacts.add(contactBeanFactory().getObject());
-        contacts.add(contactBeanFactory().getObject());
-        contacts.add(contactBeanFactory().getObject());
-        contacts.add(contactBeanFactory().getObject());
-        contacts.add(contactBeanFactory().getObject());
+        Map<String,Contact> contacts = new HashMap<String, Contact>();
+        contacts.put(contactBeanFactory().getObject().getPhone(),contactBeanFactory().getObject());
+        contacts.put(contactBeanFactory().getObject().getPhone(),contactBeanFactory().getObject());
+        contacts.put(contactBeanFactory().getObject().getPhone(),contactBeanFactory().getObject());
+        contacts.put(contactBeanFactory().getObject().getPhone(),contactBeanFactory().getObject());
+        contacts.put(contactBeanFactory().getObject().getPhone(),contactBeanFactory().getObject());
         dao.setContacts(contacts);
         return dao;
     }

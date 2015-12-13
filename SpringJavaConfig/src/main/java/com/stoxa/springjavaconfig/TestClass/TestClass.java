@@ -7,14 +7,12 @@ package com.stoxa.springjavaconfig.TestClass;
 
 import com.stoxa.springjavaconfig.Config.AppConfig;
 import com.stoxa.springjavaconfig.Model.Contact;
-import com.stoxa.springjavaconfig.Model.ContactBeanFactory;
-import com.stoxa.springjavaconfig.Service.ContactManager;
+import com.stoxa.springjavaconfig.Factory.ContactBeanFactory;
 import com.stoxa.springjavaconfig.Service.ContactService;
-import java.util.List;
+import java.util.Collection;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -22,8 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class TestClass {
    public static void main(String[] args) throws Exception {
-         ApplicationContext context = 
-      new AnnotationConfigApplicationContext(AppConfig.class);
+       ApplicationContext context = new AnnotationConfigApplicationContext (AppConfig.class);
          
         FactoryBean factory = context.getBean(ContactBeanFactory.class);
         Contact c1 = (Contact) factory.getObject();
@@ -39,7 +36,7 @@ public class TestClass {
         contactService.addContact(c3);
         contactService.addContact(c4);
 
-        List<Contact> result1 = contactService.getAllContacts();
+        Collection<Contact> result1 = contactService.getAllContacts();
         for(Contact c : result1) {
             System.out.println(c);
         }
@@ -48,7 +45,7 @@ public class TestClass {
         System.out.println("UPDATE CONTACT ==============");
         Contact change = new Contact ("Алексей", "Соколов", "+380934567894", "sokolov@yandex.ru");
         contactService.updateContact(change);
-        List<Contact> result2 = contactService.getAllContacts();
+        Collection<Contact> result2 = contactService.getAllContacts();
         for(Contact c : result2) {
             System.out.println(c);
         }
@@ -56,7 +53,7 @@ public class TestClass {
         
         System.out.println("DELETE CONTACT ==============");
         contactService.deleteContact(c3);
-        List<Contact> result3 = contactService.getAllContacts();
+        Collection<Contact> result3 = contactService.getAllContacts();
         for(Contact c : result3) {
             System.out.println(c);
         }
@@ -70,7 +67,7 @@ public class TestClass {
         
         System.out.println("CLEAR ALL CONTACTS ==============");
         contactService.clearAll();
-        List<Contact> result4 = contactService.getAllContacts();
+        Collection<Contact> result4 = contactService.getAllContacts();
         for(Contact c : result4) {
             System.out.println(c);
         }

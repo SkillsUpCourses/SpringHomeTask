@@ -8,7 +8,9 @@ package com.stoxa.springjavaconfig.Service;
 import com.stoxa.springjavaconfig.DAO.ContactDAO;
 import com.stoxa.springjavaconfig.DAO.ContactSimpleDAO;
 import com.stoxa.springjavaconfig.Model.Contact;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,17 +19,22 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationEventPublisher;
 
 /**
  *
- * @author stoxa
+ * @author ksu
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ContactManagerTest {
     
     private ContactDAO dao;
+    Contact contact1, contact2;
+    ContactManager instance;
     
     public ContactManagerTest() {
         dao = mock(ContactSimpleDAO.class);
@@ -43,36 +50,33 @@ public class ContactManagerTest {
     
     @Before
     public void setUp() {
-        
+        contact1 = new Contact("Оксана", "Рудниченко", "+380937405289", "dn100488rol@gmail.com");
+        contact2 = new Contact("Тошик", "Синяев", "+380507464280", "dn091986saa@gmail.com");
+        instance = new ContactManager();
+        instance.setDao(dao);
     }
     
     @After
     public void tearDown() {
     }
 
-    /**
-     * Test of setApplicationEventPublisher method, of class ContactManager.
-     */
-    @Test
-    public void testSetApplicationEventPublisher() {
-        System.out.println("setApplicationEventPublisher");
-        ApplicationEventPublisher publisher = null ;
-        ContactManager instance = new ContactManager();
-        instance.setApplicationEventPublisher(publisher);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of init method, of class ContactManager.
      */
     @Test
     public void testInit() {
-        System.out.println("init");
-        ContactManager instance = new ContactManager();
-        instance.init();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("init test");
+        ContactManager spyContactManager = spy(instance);
+        ApplicationEventPublisher publisher = mock(ApplicationEventPublisher.class);
+        spyContactManager.setApplicationEventPublisher(publisher);
+        spyContactManager.setMaxContactBookSize(2);
+        Map<String,Contact> contacts = new HashMap<>();
+        contacts.put(contact1.getPhone(), contact1);
+        contacts.put(contact2.getPhone(), contact2);
+        when(dao.getAllContacts()).thenReturn(contacts.values());
+        spyContactManager.init();
+        verify(spyContactManager).clear();
     }
 
     /**
@@ -80,12 +84,10 @@ public class ContactManagerTest {
      */
     @Test
     public void testAddContact() {
-        System.out.println("addContact");
-        Contact contact = new Contact("Оксана", "Рудниченко", "+380937405289", "dn100488rol@gmail.com");
-        ContactManager instance = new ContactManager();
+        System.out.println("addContact test");
+        Contact contact = new Contact("Егорчик", "Синяев", "+380777777777", "egorchik@gmail.com");
         instance.addContact(contact);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        verify(dao).addContact(contact);
     }
 
     /**
@@ -93,12 +95,11 @@ public class ContactManagerTest {
      */
     @Test
     public void testUpdateContact() {
-        System.out.println("updateContact");
-        Contact contact = null;
-        ContactManager instance = new ContactManager();
+        System.out.println("updateContact test");
+        Contact contact = new Contact("Оксана", "Синяева", "+380937405289", "dn100488rol@gmail.com");;
+        instance.addContact(contact1);
         instance.updateContact(contact);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        verify(dao).updateContact(contact);
     }
 
     /**
@@ -106,12 +107,14 @@ public class ContactManagerTest {
      */
     @Test
     public void testDeleteContact() {
-        System.out.println("deleteContact");
-        Contact contact = null;
-        ContactManager instance = new ContactManager();
+        System.out.println("deleteContact test");
+        ApplicationEventPublisher publisher = mock(ApplicationEventPublisher.class);
+        instance.setApplicationEventPublisher(publisher);
+        Contact contact = contact1;
+        instance.addContact(contact);
         instance.deleteContact(contact);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //verify(publisher).publishEvent(anyInt());
+        verify(dao).deleteContact(contact);
     }
 
     /**
@@ -119,14 +122,14 @@ public class ContactManagerTest {
      */
     @Test
     public void testGetContact() {
-        System.out.println("getContact");
-        String phone = "";
-        ContactManager instance = new ContactManager();
-        Contact expResult = null;
+        System.out.println("getContact test");
+        String phone = "+380937405289";
+        instance.addContact(contact1);
+        when(dao.getContact(phone)).thenReturn(contact1);
+        Contact expResult = contact1;
         Contact result = instance.getContact(phone);
+        verify(dao).getContact(phone);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -134,13 +137,12 @@ public class ContactManagerTest {
      */
     @Test
     public void testGetAllContacts() {
-        System.out.println("getAllContacts");
-        ContactManager instance = new ContactManager();
-        List<Contact> expResult = null;
-        List<Contact> result = instance.getAllContacts();
+        System.out.println("getAllContacts test");
+        instance.addContact(contact1);
+        Collection <Contact> expResult = mock(Collection.class);
+        when(dao.getAllContacts()).thenReturn(expResult);
+        Collection <Contact> result = instance.getAllContacts();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -148,11 +150,11 @@ public class ContactManagerTest {
      */
     @Test
     public void testClearAll() {
-        System.out.println("clearAll");
-        ContactManager instance = new ContactManager();
+        System.out.println("clearAll test");
+        ApplicationEventPublisher publisher = mock(ApplicationEventPublisher.class);
+        instance.setApplicationEventPublisher(publisher);
         instance.clearAll();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        verify(dao).clearAll();
     }
 
     /**
@@ -160,65 +162,11 @@ public class ContactManagerTest {
      */
     @Test
     public void testClear() {
-        System.out.println("clear");
-        ContactManager instance = new ContactManager();
+        System.out.println("clear test");
+        instance.addContact(contact1);
+        ApplicationEventPublisher publisher = mock(ApplicationEventPublisher.class);
+        instance.setApplicationEventPublisher(publisher);
         instance.clear();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of dao method, of class ContactManager.
-     */
-    @Test
-    public void testDao() {
-        System.out.println("dao");
-        ContactManager instance = new ContactManager();
-        ContactDAO expResult = null;
-        ContactDAO result = instance.dao();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setDao method, of class ContactManager.
-     */
-    @Test
-    public void testSetDao() {
-        System.out.println("setDao");
-        ContactDAO dao = null;
-        ContactManager instance = new ContactManager();
-        instance.setDao(dao);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getMaxContactBookSize method, of class ContactManager.
-     */
-    @Test
-    public void testGetMaxContactBookSize() {
-        System.out.println("getMaxContactBookSize");
-        ContactManager instance = new ContactManager();
-        int expResult = 0;
-        int result = instance.getMaxContactBookSize();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setMaxContactBookSize method, of class ContactManager.
-     */
-    @Test
-    public void testSetMaxContactBookSize() {
-        System.out.println("setMaxContactBookSize");
-        int maxContactBookSize = 0;
-        ContactManager instance = new ContactManager();
-        instance.setMaxContactBookSize(maxContactBookSize);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
+        verify(dao).getAllContacts();
+    }   
 }

@@ -6,7 +6,7 @@
 package com.stoxa.springjavaconfig.Service;
 
 import com.stoxa.springjavaconfig.Model.Contact;
-import java.util.List;
+import java.util.Collection;
 
 /**
  *
@@ -17,6 +17,6 @@ public interface ContactService {
     void deleteContact (Contact contact);
     void updateContact(Contact contact);
     Contact getContact(String phone);
-    List<Contact> getAllContacts();
+    Collection<Contact> getAllContacts();
     void clearAll();
 }

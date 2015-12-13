@@ -6,7 +6,7 @@
 package com.stoxa.springjavaconfig.DAO;
 
 import com.stoxa.springjavaconfig.Model.Contact;
-import java.util.List;
+import java.util.Collection;
 
 /**
  *
@@ -18,7 +18,7 @@ public interface ContactDAO {
     public void deleteContact(Contact contact);
     public Contact getContact(String phone);
     public Contact getContact(int number);
-    public List<Contact> getAllContacts();
+    public Collection<Contact> getAllContacts();
     void clearAll();
     
 }

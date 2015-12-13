@@ -8,7 +8,7 @@ package com.stoxa.springjavaconfig.Service;
 import com.stoxa.springjavaconfig.DAO.ContactDAO;
 import com.stoxa.springjavaconfig.EventListener.ClearEvent;
 import com.stoxa.springjavaconfig.Model.Contact;
-import java.util.List;
+import java.util.Collection;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 
@@ -29,7 +29,7 @@ public class ContactManager implements ContactService, ApplicationEventPublisher
     
     public void init() {
         this.contactsNumber=dao.getAllContacts().size();
-        while (contactsNumber>=maxContactBookSize) {
+        if (contactsNumber>=maxContactBookSize) {
         clear();  
             System.err.println("Почищена книга контактов");
         }
@@ -56,7 +56,7 @@ public class ContactManager implements ContactService, ApplicationEventPublisher
     }
     
     @Override
-    public List<Contact> getAllContacts() {
+    public Collection <Contact> getAllContacts() {
         return dao.getAllContacts();
     }
 
@@ -67,7 +67,7 @@ public class ContactManager implements ContactService, ApplicationEventPublisher
     
     public void clear() {
         publisher.publishEvent(new ClearEvent(this, dao.getContact(contactsNumber-1)));
-        dao.getAllContacts().remove(contactsNumber-1);
+        dao.getAllContacts().remove(dao.getContact(contactsNumber-1));
     }
 
     /**
