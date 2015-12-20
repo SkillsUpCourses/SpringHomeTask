@@ -1,0 +1,15 @@
+
+<div  ng-controller="Hello">
+    <form action="createbus" method="POST">
+                        <input ng-model="sid"><label>:SID</label><br>
+                        <input ng-model="busId"><label>:busId</label> <button ng-click="" ng-enter="">check</button><br>
+                        <input ng-model="deparLogin"><label>:deparLogin</label><br>
+                        <input ng-model="respPerson"><label>:respPerson</label><br>
+                        <input ng-model="email"><label>:email</label><br>
+                        <input ng-model="descr"><label>:descr</label><br>
+                        <button ng-click="update()" ng-enter="update()" >send</button> 
+			<p>The ID is {{createbus.sid}}</p> 
+			<p>The content is {{createbus.sid}} , {{createbus.busId}} , {{createbus.deparLogin}} , {{createbus.respPerson}} </p>
+		        <p>Answer:{{createbus.answer}} </p> 
+                    </form>
+</div>

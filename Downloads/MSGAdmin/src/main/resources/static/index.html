@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+		<title>MSGAdmin</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    		<script src="hello.js"></script>
+                <script src="app.js"></script>
+
+<style type="text/css">
+
+    * { margin:0px; padding:0px; }
+    html { height:100%; }
+    body { background: #B1BEDE; min-height:100%; min-width:800px; }
+    * html body { height:100%; }
+    #header { background:#0A1630;  height:70px; width:100%; }
+    .text_advanced {color: #fff; 
+                   font-size: 30px; 
+                   font-family: Arial; 
+                   font-weight:bold;
+                   text-decoration:none !important;
+                   line-height:1;
+                   text-transform: uppercase;}
+
+    #content { width:100%; background: #B1BEDE; padding-bottom:60px;
+/*               width: expression(document.body.clientWidth > 800 ? "100%" : "800px"); */
+               overflow:hidden; }
+
+    #container1 { width:100%; float:left; margin-right:-180px; }
+   #container2 { width:100%; float:right; margin-left:-200px; }
+
+    #left { background:#7886A0; width:300px; float:left; font-size: 15px;  padding:20px;}
+    ul {
+            font: 14px Verdana, Geneva, sans-serif;
+
+    }
+            ul li {
+                    display : inline-block;
+                     width: 260px;
+                    border : 1px solid #000; 
+                    padding-left:5px; padding-bottom: 5px; padding-right: 5px; padding-top: 5px;
+            }
+
+    #center {  margin-left:340px; padding: 20px; }
+        form {border: 1px solid #0A1630; width: 400px; padding: 20px;}
+    /*#right { background:#C0C0C0; float:right; width:180px; }*/
+
+    #min_width { width:800px; }
+
+    #footer { position:absolute; bottom:0px; background:#535E7A; width:100%; height:30px; }
+    
+    
+    a, a:visited {
+	outline:none;
+	color:#389dc1;
+        }
+
+        a:hover{
+                text-decoration:none;
+        }
+
+        section, footer, header, aside, nav{
+                display: block;
+        }
+    
+    /*-------------------------
+	Меню
+--------------------------*/
+
+nav{
+	display:inline-block;
+/*	margin:60px auto 45px;*/
+	background-color:#5597b4;
+	box-shadow:0 1px 1px #ccc;
+	border-radius:2px;
+}
+
+nav a{
+	display:inline-block;
+	padding: 18px 30px;
+	color:#fff !important;
+	font-weight:bold;
+	font-size:16px;
+	text-decoration:none !important;
+	line-height:1;
+	text-transform: uppercase;
+	background-color:transparent;
+
+	-webkit-transition:background-color 0.25s;
+	-moz-transition:background-color 0.25s;
+	transition:background-color 0.25s;
+}
+
+nav a:first-child{
+	border-radius:2px 0 0 2px;
+}
+
+nav a:last-child{
+	border-radius:0 2px 2px 0;
+}
+
+nav.newbus .newbus,
+nav.newerror .newerror,
+nav.newlocale .newlocale{
+	background-color:#e35885;
+}
+</style>
+</head>
+<body >
+    <div id="header">
+        <span class="text_advanced">
+            <a href="#/">Админка MSG</a>
+        </span>
+    </div>
+
+<div id="content" >
+<div id="container1" >
+<div id="container2" >
+    <div id="left" >
+            <nav  class="{{active}}" ng-click="$event.preventDefault()">
+            <!-- Когда пункт меню открыт по ссылке, мы устанавливаем активные переменные -->
+                <a href="#newbus" class="newbus" ng-click="active='newbus'">Заведение бизнес процессов</a>
+                <a href="#newerror" class="newerror" ng-click="active='newerror'">Заведение шаблонов сообщений</a>
+                <a href="#newlocale" class="newlocale" ng-click="active='newlocale'">Добавление локализации</a>
+            </nav>
+  
+    </div>
+
+<div id="center" ng-app="sampleApp" ng-view></div>
+
+
+</div>
+
+</div>
+</div>
+
+<div id="footer">ЕКБ ©</div>
+</body>
+</html>
